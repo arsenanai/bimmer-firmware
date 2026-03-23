@@ -12,7 +12,7 @@ php -S localhost:8000 -t public
 The app is now running at http://localhost:8000.
 
 - Customer page: http://localhost:8000/carplay/software-download
-- Admin panel: http://localhost:8000/admin (login: `admin` / `admin123`)
+- Admin panel: http://localhost:8000/admin (login: `admin` / `Bimmer@Admin2026!`)
 
 ## System Requirements
 
@@ -39,17 +39,12 @@ Copy `.env.example` to `.env` and adjust as needed. All configurable values:
 | `DB_VERSION` | `8.0` | Database server version |
 | `SHOP_URL` | BimmerTech shop URL | "Go back to the shop" link target |
 | `ADMIN_USERNAME` | `admin` | Admin panel login username |
-| `ADMIN_PASSWORD` | *(bcrypt hash)* | Admin panel login password (hashed) |
+| `ADMIN_PASSWORD` | `Bimmer@Admin2026!` | Admin panel login password (plain text) |
 
-### Changing the Admin Password
-
-```bash
-# Generate a new password hash
-php bin/console security:hash-password 'your_new_password'
-
-# Copy the hash and set it in .env.local (not .env, to avoid committing secrets)
+To change admin credentials, edit `ADMIN_USERNAME` and `ADMIN_PASSWORD` in `.env.local`:
+```
 ADMIN_USERNAME=your_username
-ADMIN_PASSWORD='$2y$13$your_generated_hash_here'
+ADMIN_PASSWORD=your_password
 ```
 
 ### Database Options
@@ -80,7 +75,7 @@ DB_VERSION=16
 
 | Command | Description |
 |---------|-------------|
-| `composer setup` | Download php-cs-fixer, create database, run migrations, load fixtures |
+| `composer setup` | Generate APP_SECRET, download php-cs-fixer, create dev + test databases, run migrations, load fixtures |
 | `composer test` | Run PHPUnit tests |
 | `composer lint` | Run PHPStan static analysis |
 | `composer fix` | Fix code style issues with PHP-CS-Fixer |
@@ -90,7 +85,7 @@ DB_VERSION=16
 
 Visit: http://localhost:8000/admin
 
-Protected with form login. Default credentials: `admin` / `admin123`.
+Protected with form login. Default credentials: `admin` / `Bimmer@Admin2026!`.
 
 ### Managing Software Versions
 

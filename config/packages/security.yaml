@@ -4,11 +4,7 @@ security:
 
     providers:
         admin_provider:
-            memory:
-                users:
-                    '%env(ADMIN_USERNAME)%':
-                        password: '%env(ADMIN_PASSWORD)%'
-                        roles: ['ROLE_ADMIN']
+            id: App\Security\AdminUserProvider
 
     firewalls:
         dev:

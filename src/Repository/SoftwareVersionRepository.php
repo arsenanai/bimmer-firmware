@@ -53,7 +53,7 @@ class SoftwareVersionRepository extends ServiceEntityRepository
     {
         $all = $this->findAll();
 
-        $total = count($all);
+        $total = \count($all);
         $latest = 0;
         $byProduct = [];
 
@@ -64,10 +64,10 @@ class SoftwareVersionRepository extends ServiceEntityRepository
                 $byProduct[$name] = ['total' => 0, 'hasLatest' => false, 'latestVersion' => null];
             }
 
-            $byProduct[$name]['total']++;
+            ++$byProduct[$name]['total'];
 
             if ($sv->isLatest()) {
-                $latest++;
+                ++$latest;
                 $byProduct[$name]['hasLatest'] = true;
                 $byProduct[$name]['latestVersion'] = $sv->getSystemVersion();
             }
