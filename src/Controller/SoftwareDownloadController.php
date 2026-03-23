@@ -12,6 +12,12 @@ class SoftwareDownloadController extends AbstractController
 {
     private const SHOP_URL = 'https://newshop.testshop1.bimmer-tech.net/';
 
+    #[Route('/', name: 'home')]
+    public function home(): Response
+    {
+        return $this->redirectToRoute('software_download');
+    }
+
     #[Route('/carplay/software-download', name: 'software_download')]
     public function index(): Response
     {

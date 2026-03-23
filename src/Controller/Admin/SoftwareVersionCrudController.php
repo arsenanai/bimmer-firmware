@@ -53,18 +53,23 @@ class SoftwareVersionCrudController extends AbstractCrudController
             ->setHelp('Version with v prefix, e.g. "v3.3.7.mmipri.c"');
         yield TextField::new('systemVersionAlt', 'Version (lookup)')
             ->setHelp('Version without v prefix, e.g. "3.3.7.mmipri.c". This is what customers enter.');
-        yield UrlField::new('link', 'General Download Link')->setRequired(false);
+        yield UrlField::new('link', 'General Download Link')
+            ->setRequired(false)
+            ->hideOnIndex();
         yield UrlField::new('st', 'ST Download Link')
             ->setHelp('Download link for ST hardware variant. Leave empty if not applicable.')
-            ->setRequired(false);
+            ->setRequired(false)
+            ->hideOnIndex();
         yield UrlField::new('gd', 'GD Download Link')
             ->setHelp('Download link for GD hardware variant. Leave empty if not applicable.')
-            ->setRequired(false);
+            ->setRequired(false)
+            ->hideOnIndex();
         yield BooleanField::new('isLatest', 'Latest Version')
             ->setHelp('Mark as the latest/current version. Only ONE entry per product line should be marked latest.');
         yield TextField::new('latestDisplayVersion', 'Latest Display Version')
             ->setHelp('Only set on "latest" entries. The version shown to users, e.g. "v3.3.7" or "v3.4.4".')
-            ->setRequired(false);
+            ->setRequired(false)
+            ->hideOnIndex();
     }
 
     public function configureFilters(Filters $filters): Filters

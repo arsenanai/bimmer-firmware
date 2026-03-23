@@ -68,12 +68,12 @@
             "@auto-scripts"
         ],
         "setup": [
+            "# friendsofphp/php-cs-fixer cannot be installed via Composer due to Symfony version conflicts,",
+            "# so we download the phar directly. Skips download if already present.",
+            "@php -r \"if(!file_exists('vendor/bin/php-cs-fixer')){copy('https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/latest/download/php-cs-fixer.phar','vendor/bin/php-cs-fixer');chmod('vendor/bin/php-cs-fixer',0755);}\"",
             "@php bin/console doctrine:database:create --if-not-exists",
             "@php bin/console doctrine:migrations:migrate --no-interaction",
             "@php bin/console doctrine:fixtures:load --no-interaction"
-        ],
-        "serve": [
-            "@php -S localhost:8000 -t public"
         ],
         "test": [
             "@php bin/phpunit"
@@ -82,7 +82,7 @@
             "@php vendor/bin/phpstan analyse --memory-limit=512M"
         ],
         "fix": [
-            "@php php-cs-fixer fix"
+            "@php vendor/bin/php-cs-fixer fix"
         ],
         "analyse": [
             "@lint"
@@ -90,7 +90,7 @@
         "qa": [
             "@test",
             "@lint",
-            "@php php-cs-fixer fix --dry-run --diff"
+            "@php vendor/bin/php-cs-fixer fix --dry-run --diff"
         ]
     },
     "conflict": {

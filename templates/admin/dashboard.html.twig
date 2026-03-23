@@ -1,13 +1,103 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block page_title %}BimmerTech Firmware Admin{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
 
-{% block content_body %}
-    <div class="p-4">
-        <h2>Welcome to the Firmware Admin Panel</h2>
-        <p>Use the sidebar to manage software versions for the CarPlay / Android Auto MMI product line.</p>
-        <ul>
-            <li><strong>Software Versions</strong> — Add, edit, or remove firmware version entries that customers see on the download page.</li>
-        </ul>
+{% block main %}
+<style>
+    .dash-stats { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+    .dash-stat {
+        flex: 1; min-width: 140px;
+        background: var(--dash-card-bg, #f8f9fa); border-radius: 8px; padding: 20px;
+        text-align: center; border: 1px solid var(--dash-border, #e9ecef);
+    }
+    .dash-stat-num { font-size: 32px; font-weight: 700; color: var(--dash-text, #212121); line-height: 1; }
+    .dash-stat-label { font-size: 13px; color: var(--dash-muted, #6c757d); margin-top: 6px; }
+
+    .dash-section { margin-bottom: 24px; }
+    .dash-section h3 { font-size: 16px; font-weight: 600; margin: 0 0 12px; color: var(--dash-text, #212121); }
+
+    .dash-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .dash-table th { text-align: left; padding: 8px 12px; background: var(--dash-card-bg, #f8f9fa); border-bottom: 2px solid var(--dash-border, #dee2e6); font-weight: 600; color: var(--dash-muted, #495057); }
+    .dash-table td { padding: 8px 12px; border-bottom: 1px solid var(--dash-border, #e9ecef); color: var(--dash-text, #212121); }
+    .dash-table tr:last-child td { border-bottom: none; }
+
+    .badge-ok { display: inline-block; background: var(--dash-ok-bg, #d4edda); color: var(--dash-ok-text, #155724); padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+    .badge-warn { display: inline-block; background: var(--dash-warn-bg, #fff3cd); color: var(--dash-warn-text, #856404); padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+
+    .dash-links { display: flex; gap: 12px; flex-wrap: wrap; }
+    .dash-link {
+        display: inline-block; padding: 10px 20px; border-radius: 8px;
+        text-decoration: none; font-size: 14px; font-weight: 500;
+        border: 1px solid var(--dash-border, #dee2e6); color: var(--dash-text, #212121); transition: border-color 0.2s, color 0.2s;
+    }
+    .dash-link:hover { border-color: var(--dash-muted, #6c757d); text-decoration: none; color: var(--dash-text, #212121); }
+
+    /* Dark mode */
+    [data-bs-theme="dark"] {
+        --dash-card-bg: #2b2f38;
+        --dash-border: #3d4250;
+        --dash-text: #e0e0e0;
+        --dash-muted: #9ca3af;
+        --dash-ok-bg: #1a3a2a;
+        --dash-ok-text: #6ee7b7;
+        --dash-warn-bg: #3a3020;
+        --dash-warn-text: #fbbf24;
+    }
+</style>
+
+<div class="dash-stats">
+    <div class="dash-stat">
+        <div class="dash-stat-num">{{ stats.total }}</div>
+        <div class="dash-stat-label">Total versions</div>
     </div>
+    <div class="dash-stat">
+        <div class="dash-stat-num">{{ stats.latest }}</div>
+        <div class="dash-stat-label">Latest (current)</div>
+    </div>
+    <div class="dash-stat">
+        <div class="dash-stat-num">{{ stats.outdated }}</div>
+        <div class="dash-stat-label">Outdated versions</div>
+    </div>
+    <div class="dash-stat">
+        <div class="dash-stat-num">{{ stats.byProduct|length }}</div>
+        <div class="dash-stat-label">Product lines</div>
+    </div>
+</div>
+
+<div class="dash-section">
+    <h3>Product lines</h3>
+    <table class="dash-table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Versions</th>
+                <th>Latest version</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for name, info in stats.byProduct %}
+            <tr>
+                <td>{{ name }}</td>
+                <td>{{ info.total }}</td>
+                <td>{{ info.latestVersion ?? '—' }}</td>
+                <td>
+                    {% if info.hasLatest %}
+                        <span class="badge-ok">OK</span>
+                    {% else %}
+                        <span class="badge-warn">No latest marked</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="dash-section">
+    <h3>Quick links</h3>
+    <div class="dash-links">
+        <a href="{{ path('software_download') }}" target="_blank" class="dash-link">&#8599; Customer download page</a>
+    </div>
+</div>
 {% endblock %}

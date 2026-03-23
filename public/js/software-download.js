@@ -2,6 +2,8 @@
     'use strict';
 
     var form = document.getElementById('softwareForm');
+    if (!form) return;
+
     var versionInput = document.getElementById('version');
     var hwVersionInput = document.getElementById('hwVersion');
     var versionError = document.getElementById('versionError');
